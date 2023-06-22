@@ -29,6 +29,9 @@ class train_config:
     quantization: bool = False
     one_gpu: bool = False
     save_model: bool = True
+    dist_checkpoint_root_folder: str="model_checkpoints"
+    dist_checkpoint_folder: str="fine-tuned"
+    save_optimizer: bool=False
     
 
     
