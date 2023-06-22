@@ -23,6 +23,7 @@ from peft import (
 from transformers import LlamaForCausalLM, LlamaTokenizer
 import torch.distributed as dist
 from .memory_utils import MemoryTrace
+import model_checkpointing
 from torch.distributed.fsdp.sharded_grad_scaler import ShardedGradScaler
 scaler = ShardedGradScaler()
 
