@@ -267,18 +267,19 @@ def main(**kwargs):
         )
     scheduler = StepLR(optimizer, step_size=1, gamma=train_config.gamma)
 
-    train(
+    results = train(
         model,
         train_dataloader,
+        eval_dataloader, 
+        tokenizer,
         optimizer,
         scheduler,
         gradient_accumulation_steps,
-        train_config.num_epochs,
-        local_rank,
         train_config,
+        fsdp_config if train_config.enable_fsdp else None,
+        local_rank if train_config.enable_fsdp else None,
+        rank if train_config.enable_fsdp else None,
     )
-    evaluation(model, eval_dataloader, local_rank, tokenizer)
-    model.save_pretrained(train_config.output_dir)
 
 
 if __name__ == "__main__":
