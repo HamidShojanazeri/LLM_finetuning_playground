@@ -28,6 +28,7 @@ class train_config:
     num_freeze_layers: int = 1
     quantization: bool = False
     one_gpu: bool = False
+    save_model: bool = True
     
 
     
