@@ -99,17 +99,21 @@ def save_model_and_optimizer_sharded(model, rank, cfg,optim=None, verbose=True):
     t0 = time.perf_counter()
 
     with FSDP.state_dict_type(model, StateDictType.SHARDED_STATE_DICT):
+        print("***** we are here to save the model ****** step 11111")
 
         state_dict = {"model": model.state_dict()}
         if optim is not None:
             state_dict["optim"] = FSDP.optim_state_dict(model, optim)
-
-        dist_cp.save_state_dict(
-            state_dict=state_dict,
-            storage_writer=distributed_writer,
-            planner=DefaultSavePlanner(),
+        state= model.state_dict()
+        types = {k:type(v) for k , v in state.items()}
+        print("***** we are here to save the model ******")
+        print(types)
+        # dist_cp.save_state_dict(
+        #     state_dict=state_dict,
+        #     storage_writer=distributed_writer,
+        #     planner=DefaultSavePlanner(),
             
-        )
+        # )
     dist.barrier()
     t1 = time.perf_counter()
     if rank == 0:

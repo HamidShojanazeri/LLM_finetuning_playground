@@ -24,6 +24,7 @@ from transformers import LlamaForCausalLM, LlamaTokenizer
 import torch.distributed as dist
 from .memory_utils import MemoryTrace
 import model_checkpointing
+from torch.distributed.fsdp import StateDictType
 from torch.distributed.fsdp.sharded_grad_scaler import ShardedGradScaler
 scaler = ShardedGradScaler()
 
@@ -136,8 +137,6 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
                         model_checkpointing.save_optimizer_checkpoint(
                             model, optimizer, rank, train_config, epoch=1
                         )           
-
-        print(f"Epoch {epoch+1}: train_perplexity={train_perplexity:.4f}, train_epoch_loss={train_epoch_loss:.4f}")
 
     avg_train_prep = sum(train_prep)/len(train_prep)
     avg_train_loss = sum(train_loss)/len(train_loss)
